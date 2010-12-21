@@ -201,12 +201,6 @@
 			var destruct = function(item) {
 				stage.trigger('destructstart', [item]);
 				selection.addClass('destructing');
-
-				// Remove item
-				item.addClass('destructing').slideUp('fast', function() {
-					item.remove();
-					items = items.not(item);
-				});
 				
 				// Update queue
 				queue.find('li[data-value=' + item.attr('data-value') + ']').removeClass('selected');
@@ -227,8 +221,14 @@
 				// Sync queue
 				queue.find('li[data-value="' + item.attr('data-value') + '"]').trigger('choose');
 
+				// Remove item
+				item.addClass('destructing').slideUp('fast', function() {
+					item.remove();
+					items = items.not(item);
+					stage.trigger('destructstop', [item]);
+				});
+
 				selection.removeClass('destructing');
-				stage.trigger('destructstop', [item]);
 			};
 			
 			// Choose an item in the queue
