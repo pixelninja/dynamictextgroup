@@ -20,6 +20,7 @@
 		// Initialize Stage
 		$('div.stage').each(function() {
 			var stage = $(this),
+				field = stage.parent(),
 				selection = stage.find('ul.selection'),
 				templates = stage.find('li.template').remove(),
 				empty = stage.find('li.empty').remove(),			
@@ -34,6 +35,18 @@
 			if(items.size() == 0) {
 				selection.append(empty);
 			}
+			
+			// Set sort order
+			if(stage.is('.draggable')) {
+				var sortorder = field.find('input[name*=sort_order]').val();
+				
+				if(sortorder && sortorder != 0) {
+					sortorder = sortorder.split(',').reverse();
+					$.each(sortorder, function(index, id) {
+						items.filter('[data-value=' + id + ']').prependTo(selection);
+					});
+				}
+			}			
 
 			// Add constructors
 			if(stage.is('.constructable')) {
@@ -61,6 +74,14 @@
 			if(queue.children().size() > 1) {
 				queue.find('ul').hide();
 				selection.after(queue);
+			}
+			
+			// Make draggable
+			if(stage.is('.draggable')) {
+				selection.symphonyOrderable({
+					items: 'li',
+					handles: 'span',
+				});
 			}
 		
 			// Store templates:
@@ -151,6 +172,26 @@
 			});
 			stage.bind('searchstart.stage', function(event, strings) {
 				search(strings);			
+			});
+			
+			// Sorting
+			selection.bind('orderstop', function() {
+
+				// Get new item order
+				var sortorder = selection.find('li').map(function() {
+					return $(this).attr('data-value');
+				}).get().join(',');
+
+				// Save sortorder				
+				field.find('input[name*="sort_order"]').val(sortorder);
+			});
+			
+			// Dragging
+			selection.bind('orderstart', function() {
+				selection.addClass('dragging');
+			});
+			selection.bind('orderstop', function() {
+				selection.removeClass('dragging');
 			});
 					
 		/*-----------------------------------------------------------------------*/

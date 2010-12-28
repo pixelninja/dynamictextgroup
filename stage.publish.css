@@ -36,7 +36,7 @@ div.stage ul li:hover {
 	background: #dcdcdc;
 }
 
-div.stage li.active, div.stage li.active:hover {
+div.stage li.active, div.stage li.active:hover, div.stage ul.selection li.ordering {
 	background: #d3d3d3;
 	border-bottom: 1px solid #deddd9;
 	border-left: 1px solid #b5b4af;
@@ -44,6 +44,11 @@ div.stage li.active, div.stage li.active:hover {
 	border-top: 1px solid #c2c2c2;
 	-moz-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
 	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.3);
+}
+
+div.stage ul.selection li.ordering {
+	z-index: 1000;
+	border-bottom: 1px solid #e3e3e3;
 }
 
 div.stage li a.destructor {
@@ -69,10 +74,19 @@ div.stage li a.destructor:hover {
 	border-color: #a59e9e;
 }
 
+div.stage.draggable ul.selection li span {
+	cursor: move;
+	background: url(images/draggable.gif) 4px center no-repeat;
+}
+
+div.stage.draggable ul.selection li span:hover {
+	background: url(images/dragging.gif) 4px center no-repeat;
+}
+
 div.stage ul li span, div.stage ul li a.file {
 	display: inline-block;
-	padding: 0;
-	margin: 7px 14px;
+	margin: 0;
+	padding: 7px 14px;
 	color: #3f3d35;
 	text-decoration: none;
 }
