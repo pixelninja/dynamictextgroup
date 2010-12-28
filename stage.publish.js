@@ -175,7 +175,7 @@
 			});
 			
 			// Sorting
-			selection.bind('orderstop', function() {
+			selection.bind('orderstop.stage', function() {
 
 				// Get new item order
 				var sortorder = selection.find('li').map(function() {
@@ -187,10 +187,10 @@
 			});
 			
 			// Dragging
-			selection.bind('orderstart', function() {
+			selection.bind('orderstart.stage', function() {
 				selection.addClass('dragging');
 			});
-			selection.bind('orderstop', function() {
+			selection.bind('orderstop.stage', function() {
 				selection.removeClass('dragging');
 			});
 					
@@ -358,6 +358,11 @@
 				selection.find('li').each(function(index, item) {
 					queue.find('li[data-value="' + $(item).attr('data-value') + '"]').addClass('selected');
 				});
+			};
+			
+			// Drag items
+			var drag = function() {
+			
 			};
 					
 		});
