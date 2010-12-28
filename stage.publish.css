@@ -83,6 +83,10 @@ div.stage.draggable ul.selection li span:hover {
 	background: url(images/dragging.gif) 4px center no-repeat;
 }
 
+div.stage.droppable ul.selection li span {
+	cursor: move;
+}
+
 div.stage ul li span, div.stage ul li a.file {
 	display: inline-block;
 	margin: 0;
@@ -198,4 +202,21 @@ div.stage div.queue li.selected a.file {
 
 div.stage div.queue li:nth-child(odd).selected {
 	background: #5273c0;
+}
+
+div.dropper {
+	background: rgba(0, 0, 0, 0.8) url(images/drop.png) center no-repeat;
+	z-index: 2000;
+	position: absolute;
+	border: 4px solid #fff;
+}
+
+div.dragger {
+	padding: 7px 14px;
+	background: #e6e6e5;
+	border: 1px solid #d3d3d3;
+	color: #3f3d35;
+	-moz-box-shadow: 0 0 4px rgba(46, 45, 40, 0.1);
+	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.1);
+	z-index: 3000;
 }

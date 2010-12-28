@@ -19,13 +19,16 @@
 
 		// Initialize Stage
 		$('div.stage').each(function() {
-			var stage = $(this),
+			var page = $(document),
+				stage = $(this),
 				field = stage.parent(),
 				selection = stage.find('ul.selection'),
 				templates = stage.find('li.template').remove(),
 				empty = stage.find('li.empty').remove(),			
 				items = stage.find('li'),
 				queue = $('<div class="queue"><ul></ul></div>'),
+				dragger = $('<div class="dragger"></div>'),
+				dropper = $('<div class="dropper"></div>'),
 				index;
 
 			// Handle empty stage
@@ -82,6 +85,16 @@
 					items: 'li',
 					handles: 'span',
 				});
+			}
+			
+			// Add drag helper
+			if(page.find('div.dragger').size() == 0) {
+				$('body').append(dragger.hide());
+			}
+			
+			// Add drop helper
+			if(page.find('div.dropper').size() == 0) {
+				$('body').append(dropper.hide());
 			}
 		
 			// Store templates:
@@ -186,14 +199,22 @@
 				field.find('input[name*="sort_order"]').val(sortorder);
 			});
 			
-			// Dragging
-			selection.bind('orderstart.stage', function() {
-				selection.addClass('dragging');
-			});
-			selection.bind('orderstop.stage', function() {
-				selection.removeClass('dragging');
-			});
-					
+			// Dragging & dropping
+			if(stage.is('.droppable')) {
+
+				selection.bind('orderstart', function(event, item) {
+					move(item, event);
+				});							
+				selection.delegate('span', 'mousedown.stage', function(event) {
+					var item = $(event.target).parent('li');
+						
+					event.preventDefault();
+					event.stopPropagation();
+		
+					move(item, event);
+				});
+			};
+											
 		/*-----------------------------------------------------------------------*/
 
 			// Construct an item
@@ -359,11 +380,91 @@
 					queue.find('li[data-value="' + $(item).attr('data-value') + '"]').addClass('selected');
 				});
 			};
+
+			// Drag and drop items
+			var move = function(item, event) {
+				selection.addClass('dragging');
+				dragger.empty().append(item.html()).attr('data-value', item.attr('data-value')).find('.destructor').remove();
+				
+				// Context
+				if(stage.is('.draggable')) {
+					context = selection;
+				}
+				else {
+					context = item;
+				}
+
+				// Dragging
+				page.bind('mousemove.stage', function(event) {
+					drag(context, item, event);
+				})
+				
+				// Stop dragging
+				page.one('mouseup.stage', function(event) {
+					dropper.trigger('mouseout.stage');
+					dragger.fadeOut('fast');
+					$('textarea').trigger('drop.stage', [item]);
+					page.unbind('.stage');
+					selection.removeClass('dragging');
+				});
+
+				// Dropping
+				page.delegate('textarea', 'mouseover.stage', function() {
+					var textarea = $(this);
+					
+					// Drop item
+					drop(textarea);
+				});
+				page.delegate('div.dropper', 'mouseout.stage', function() {
+					var textarea = $(this).removeClass('droptarget');
+					
+					// Hide drop helper
+					dropper.fadeOut('fast');
+				});
+			};
 			
 			// Drag items
-			var drag = function() {
-			
+			var drag = function(context, item, event) {
+				var offset = context.offset(),
+					area = {
+						top: offset.top - 10,
+						left: offset.left - 10,
+						bottom: offset.top + context.height() + 10,
+						right: offset.left + context.width() + 10
+					},
+					x = event.pageX,
+					y = event.pageY;
+				
+				// Move drag helper
+				dragger.css({
+					position: 'absolute',
+					top: y - 15,
+					left: x + 15
+				}),
+
+				// Show drag helper
+				if(x < area.left || x > area.right || y < area.top || y > area.bottom) {
+					dragger.fadeIn('fast');
+				}
+
+				// Hide drag helper
+				else {
+					dragger.fadeOut('fast');
+				}			
 			};
+			
+			var drop = function(textarea) {
+				var offset = textarea.offset();
+			
+				// Show drop helper
+				textarea.addClass('droptarget');
+				dropper.css({
+					width: textarea.outerWidth(),
+					height: textarea.outerHeight(),
+					top: offset.top - 4,
+					left: offset.left - 4
+				}).fadeIn('fast');			
+			}
 					
 		});
 
