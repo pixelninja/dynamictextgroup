@@ -440,7 +440,7 @@
 					position: 'absolute',
 					top: y - 15,
 					left: x + 15
-				}),
+				});
 
 				// Show drag helper
 				if(x < area.left || x > area.right || y < area.top || y > area.bottom) {
