@@ -60,7 +60,7 @@ div.stage li a.destructor {
 	height: 14px;
 	width: 14px;
 	line-height: 1.5;
-	background: #d3d3d2 url(images/delete.png) center no-repeat;
+	background: #d3d3d3 url(images/delete.png) center no-repeat;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	text-align: center;
@@ -117,7 +117,7 @@ div.stage ul li.drawer {
 }
 
 div.stage div.queue {
-	background: #f5f5f3;
+	background: #f5f5f4;
 	border: 1px solid #e4e4de;
 	padding: 5px 12px 0;
 	-webkit-border-bottom-left-radius: 2px;
@@ -186,7 +186,7 @@ div.stage div.queue li {
 	cursor: pointer;
 }
 
-div.stage div.queue li:nth-child(odd) {
+div.stage div.queue li:nth-child(even) {
 	background: #f5f5f4;
 }
 
@@ -200,7 +200,7 @@ div.stage div.queue li.selected a.file {
 	color: #fff;
 }
 
-div.stage div.queue li:nth-child(odd).selected {
+div.stage div.queue li:nth-child(even).selected {
 	background: #5273c0;
 }
 
