@@ -8,6 +8,45 @@
 	 * Stage settings in the section editor. 
 	 */
 	class Stage {
+	
+		public static function install() {
+			$status = array();
+			
+			// Create database stage table
+			$status[] = Administration::instance()->Database->query(
+				"CREATE TABLE IF NOT EXISTS `tbl_fields_stage` (
+					`id` int(11) unsigned NOT NULL auto_increment,
+					`field_id` int(11) unsigned NOT NULL default '0',
+					`constructable` smallint(1) default '0',
+					`destructable` smallint(1) default '0',
+					`draggable` smallint(1) default '0',
+					`droppable` smallint(1) default '0',
+					`searchable` smallint(1) default '0',
+					`context` varchar(255) default NULL,
+					PRIMARY KEY  (`id`)
+				) TYPE=MyISAM;"
+			);
+			
+			// Create database sorting table
+			$status[] = Administration::instance()->Database->query(
+				"CREATE TABLE IF NOT EXISTS `tbl_fields_stage_sorting` (
+					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+					`entry_id` int(11) NOT NULL,
+					`field_id` int(11) NOT NULL,
+					`order` text,
+					`context` varchar(255) default NULL,
+					PRIMARY KEY (`id`)
+				)"
+			);
+
+			// Report status
+			if(in_array(false, $status, true)) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
 
 		/**
 		 * Display settings in the section editor.
