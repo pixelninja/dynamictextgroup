@@ -74,7 +74,7 @@ div.stage li a.destructor:hover {
 	border-color: #a59e9e;
 }
 
-div.stage.draggable ul.selection li span {
+div.stage.draggable ul.selection li span, div.stage.draggable ul.selection li .handle {
 	cursor: move;
 	background: url(images/draggable.gif) 4px center no-repeat;
 }

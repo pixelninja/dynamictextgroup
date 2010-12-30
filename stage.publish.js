@@ -205,7 +205,7 @@
 				selection.bind('orderstart', function(event, item) {
 					move(item, event);
 				});							
-				selection.delegate('span', 'mousedown.stage', function(event) {
+				selection.delegate('span, .handle', 'mousedown.stage', function(event) {
 					var item = $(event.target).parent('li');
 						
 					event.preventDefault();
@@ -401,7 +401,7 @@
 				
 				// Stop dragging
 				page.one('mouseup.stage', function(event) {
-					dropper.trigger('mouseout.stage');
+					dropper.trigger('mouseout.stage', false);
 					dragger.fadeOut('fast');
 					$('textarea').trigger('drop.stage', [item]);
 					page.unbind('.stage');
@@ -415,11 +415,18 @@
 					// Drop item
 					drop(textarea);
 				});
-				page.delegate('div.dropper', 'mouseout.stage', function() {
-					var textarea = $(this).removeClass('droptarget');
+				page.delegate('div.dropper', 'mouseout.stage', function(event, moved) {
+					var target = $(event.relatedTarget);
+					
+					// Don't remove droptarget on mouseup
+					if(moved !== false) {
+						$('textarea').removeClass('droptarget');
+					}
 					
 					// Hide drop helper
-					dropper.fadeOut('fast');
+					if(!target.is('.dragger') && target.parents('div.dragger').size() == 0) {
+						dropper.fadeOut('fast');
+					}
 				});
 			};
 			
