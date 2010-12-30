@@ -87,7 +87,7 @@ div.stage.droppable ul.selection li span {
 	cursor: move;
 }
 
-div.stage ul li span, div.stage ul li a.file {
+div.stage ul li span {
 	display: inline-block;
 	margin: 0;
 	padding: 7px 14px;
@@ -218,5 +218,7 @@ div.dragger {
 	color: #3f3d35;
 	-moz-box-shadow: 0 0 4px rgba(46, 45, 40, 0.1);
 	-webkit-box-shadow: 0 0 4px rgba(46, 45, 40, 0.1);
+	-webkit-border-radius: 2px;
+	-webkit-border-radius: 2px;
 	z-index: 3000;
 }
