@@ -203,6 +203,7 @@
 			if(stage.is('.droppable')) {
 
 				selection.bind('orderstart', function(event, item) {
+					$('textarea').removeClass('droptarget');
 					move(item, event);
 				});							
 				selection.delegate('span, .handle', 'mousedown.stage', function(event) {
