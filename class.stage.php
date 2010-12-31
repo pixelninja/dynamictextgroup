@@ -142,18 +142,45 @@
 			Administration::instance()->Database->query(
 				"DELETE FROM `tbl_fields_stage` WHERE `field_id` = '$field_id' LIMIT 1"
 			);
-					
+			
 			// Save new stage settings for this field
 			if(is_array($data)) {
 				Administration::instance()->Database->query(
-					"INSERT INTO `tbl_fields_stage` (`field_id`, " . implode(', ', array_keys($data)) . ", `context`) VALUES ($field_id, " . implode(', ', $data) . ", 'subsectionmanager')"
+					"INSERT INTO `tbl_fields_stage` (`field_id`, " . implode(', ', array_keys($data)) . ", `context`) VALUES ($field_id, " . implode(', ', $data) . ", '$context')"
 				);
 			}
 			else {
 				Administration::instance()->Database->query(
-					"INSERT INTO `tbl_fields_stage` (`field_id`, `context`) VALUES ($field_id, $context)"
+					"INSERT INTO `tbl_fields_stage` (`field_id`, `context`) VALUES ($field_id, '$context')"
 				);
 			}
+		}
+		
+		/**
+		 * Create stage interface.
+		 *
+		 * @param string $handle
+		 *  Handle of the parent extension
+		 * @param integer $id
+		 *  ID of the parent field
+		 * @param string $custom_settings
+		 *  Custom stage settings separated with spaces
+		 * @param array $content
+		 *  An array of XMLElements that should be appended to the stage selection
+		 * @return XMLElement
+		 *  Return stage interface
+		 */		
+		public static function create($handle, $id, $custom_settings, $content=array()) {
+			
+			// Get stage settings
+			$settings = 'stage ' . implode(' ', Stage::getComponents($id)) . ' ' . $custom_settings;
+			
+			// Create stage
+			$stage = new XMLElement('div', NULL, array('class' => $settings));
+			$selection = new XMLElement('ul', NULL, array('class' => 'selection'));
+			$selection->appendChildArray($content);
+			$stage->appendChild($selection);
+			return $stage;	
 		}
 		
 		/**
