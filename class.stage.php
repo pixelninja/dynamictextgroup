@@ -9,6 +9,12 @@
 	 */
 	class Stage {
 	
+		/**
+		 * Install Stage by creating tables for settings and sortings if needed.
+		 *
+		 * @return boolean
+		 *  Returns true, if installation was completed successfully, false otherwise
+		 */
 		public static function install() {
 			$status = array();
 			
