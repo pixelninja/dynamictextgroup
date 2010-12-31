@@ -57,10 +57,12 @@
 		 *  Field position in section editor
 		 * @param string $title
 		 *  Title of the settings fieldset
+		 * @param array $order
+		 *  Optional array to sort and limit the setting display
 		 * @return XMLElement
 		 *  Returns the settings fieldset
 		 */
-		public static function displaySettings($field_id, $position, $title) {
+		public static function displaySettings($field_id, $position, $title, $order=NULL) {
 		
 			// Create settings fieldset
 			$fieldset = new XMLElement('fieldset', '<legend>' . $title . '</legend>', array('class' => 'settings group compact'));
@@ -81,29 +83,43 @@
 				);
 			}
 			
-			// Constructable
-			$setting = new XMLElement('label', '<input name="fields[' . $position . '][stage][constructable]" value="1" type="checkbox"' . ($stage['constructable'] == 0 ? '' : ' checked="checked"') . '/> ' . __('Allow creation of new items') . ' <i>' . __('This will add a <code>Create New</code> button to the interface') . '</i>');
-			$fieldset->appendChild($setting);
+			// Setting order
+			if(empty($order)) {
+				$order = array('constructable', 'destructable', 'searchable', 'droppable', 'draggable');
+			}
 			
-			// Destructable		
-			$setting = new XMLElement('label', '<input name="fields[' . $position . '][stage][destructable]" value="1" type="checkbox"' . ($stage['destructable'] == 0 ? '' : ' checked="checked"') . '/> ' . __('Allow deselection of items') . ' <i>' . __('This will add a <code>Remove</code> button to the interface') . '</i>');
-			$fieldset->appendChild($setting);
+			// Create settings
+			foreach($order as $setting) {
 			
-			// Searchable
-			$setting = new XMLElement('label', '<input name="fields[' . $position . '][stage][searchable]" value="1" type="checkbox"' . ($stage['searchable'] == 0 ? '' : ' checked="checked"') . '/> ' . __('Allow selection of items from a list of existing items') . ' <i>' . __('This will add a search field to the interface') . '</i>');
-			$fieldset->appendChild($setting);
+				// Get copy
+				if($setting == 'constructable') {
+					$option = __('Allow creation of new items');
+					$description = __('This will add a <code>Create New</code> button to the interface');
+				}
+				elseif($setting == 'destructable') {
+					$option = __('Allow deselection of items');
+					$description = __('This will add a <code>Remove</code> button to the interface');
+				}
+				elseif($setting == 'searchable') {
+					$option = __('Allow selection of items from a list of existing items');
+					$description = __('This will add a search field to the interface');
+				}
+				elseif($setting == 'droppable') {
+					$option = __('Allow dropping of items');
+					$description = __('This will enable item dropping on textareas');
+				}
+				elseif($setting == 'draggable') {
+					$option = __('Allow sorting of items');
+					$description = __('This will enable item dragging and reordering');
+				}
 			
-			// Droppable
-			$setting = new XMLElement('label', '<input name="fields[' . $position . '][stage][droppable]" value="1" type="checkbox"' . ($stage['droppable'] == 0 ? '' : ' checked="checked"') . '/> ' . __('Allow dropping of items') . ' <i>' . __('This will enable item dropping on textareas') . '</i>');
-			$fieldset->appendChild($setting);
-			
-			// Draggable
-			$setting = new XMLElement('label', '<input name="fields[' . $position . '][stage][draggable]" value="1" type="checkbox"' . ($stage['draggable'] == 0 ? '' : ' checked="checked"') . '/> ' . __('Allow sorting of items') . ' <i>' . __('This will enable item dragging and reordering') . '</i>');
-			$fieldset->appendChild($setting);
+				// Layout
+				$label = new XMLElement('label', '<input name="fields[' . $position . '][stage][' . $setting . ']" value="1" type="checkbox"' . ($stage[$setting] == 0 ? '' : ' checked="checked"') . '/> ' . $option . ' <i>' . $description . '</i>');
+				$fieldset->appendChild($label);
+			}
 			
 			// Return stage settings
 			return $fieldset;
-			
 		}
 		
 		/**
