@@ -71,7 +71,9 @@
 		public static function displaySettings($field_id, $position, $title, $order=NULL) {
 		
 			// Create settings fieldset
-			$fieldset = new XMLElement('fieldset', '<legend>' . $title . '</legend>', array('class' => 'settings group compact'));
+			$fieldset = new XMLElement('fieldset', '<legend>' . $title . '</legend>');
+			$group = new XMLElement('div', NULL, array('class' => 'compact'));
+			$fieldset->appendChild($group);
 			
 			// Get stage settings
 			$stage = Administration::instance()->Database->fetchRow(0, 
@@ -121,7 +123,7 @@
 			
 				// Layout
 				$label = new XMLElement('label', '<input name="fields[' . $position . '][stage][' . $setting . ']" value="1" type="checkbox"' . ($stage[$setting] == 0 ? '' : ' checked="checked"') . '/> ' . $option . ' <i>' . $description . '</i>');
-				$fieldset->appendChild($label);
+				$group->appendChild($label);
 			}
 			
 			// Return stage settings
