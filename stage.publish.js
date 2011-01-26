@@ -83,7 +83,7 @@
 			if(stage.is('.draggable')) {
 				selection.symphonyOrderable({
 					items: 'li',
-					handles: 'span, .handle',
+					handles: 'span, .handle'
 				});
 			}
 			
