@@ -6,7 +6,8 @@
  */
 
 div.stage {
-	margin: -1.75em 0 1.75em;
+	margin: -1.5em 0 1.5em;
+	padding-top: 2px;	
 }
 
 div.stage ul {
