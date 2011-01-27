@@ -27,6 +27,8 @@
 				empty = stage.find('li.empty').remove(),			
 				items = stage.find('li'),
 				queue = $('<div class="queue"><ul></ul></div>'),
+				placeholder = Symphony.Language.get('Browse') + ' …',
+				browser = $('<input type="search" class="browser placeholder" value="' + placeholder + '" />'),
 				dragger = $('<div class="dragger"></div>'),
 				dropper = $('<div class="dropper"></div>'),
 				index;
@@ -69,7 +71,7 @@
 	
 			// Add search field
 			if(stage.is('.searchable')) {
-				$('<input type="search" placeholder="' + Symphony.Language.get('Browse') + ' &#8230;" class="browser" value="" />').prependTo(queue);
+				browser.prependTo(queue);
 			}
 
 			// Add queue
@@ -151,6 +153,11 @@
 			stage.delegate('.browser', 'click.stage', function() {
 				stage.trigger('browsestart');
 				queue.find('ul').slideDown('fast');
+				
+				// Clear placeholder
+				if(browser.val() == placeholder) {
+					browser.val('').removeClass('placeholder');
+				}
 
 				// Close queue on body click
 				$('body').one('click.stage', function() {
@@ -158,8 +165,9 @@
 				});
 			})
 			stage.bind('browsestop.stage', function() {
-				queue.find('.browser').val('');
+				browser.val(placeholder).addClass('placeholder');
 				queue.find('ul').slideUp('fast');
+				queue.find('ul li').show();
 			});
 			
 			// Updating
