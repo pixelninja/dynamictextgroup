@@ -367,7 +367,7 @@
 
 				// Build search index
 				if(!index) {
-					index = queue.find('li').map(function() {
+					index = queue.find('li:not(.message)').map(function() {
 						return $(this).text().toLowerCase();
 					});
 				}
