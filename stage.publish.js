@@ -14,7 +14,10 @@
 			'Browse': false,
 			'Create New': false,
 			'Remove Item': false,
-			'No items found.': false
+			'No items found.': false,
+			'no results': false,
+			'1 result': false,
+			'{$count} results': false
 		});
 
 		// Initialize Stage
@@ -28,7 +31,9 @@
 				items = stage.find('li'),
 				queue = $('<div class="queue"><ul></ul></div>'),
 				placeholder = Symphony.Language.get('Browse') + ' …',
-				browser = $('<input type="search" class="browser placeholder" value="' + placeholder + '" />'),
+				browser = $('<div class="browser"><input type="text" class="placeholder" value="' + placeholder + '" /><div class="counter">' + Symphony.Language.get('{$count} results', { count: '0' }) + '</div></div>'),
+				searchfield = browser.find('input'),
+				counter = browser.find('.counter').hide(),
 				dragger = $('<div class="dragger"></div>'),
 				dropper = $('<div class="dropper"></div>'),
 				index;
@@ -53,14 +58,9 @@
 				}
 			}			
 
-			// Add constructors
-			if(stage.is('.constructable')) {
-				$('<a class="create">' + Symphony.Language.get('Create New') + '</a>').prependTo(queue);
-			}
-
 			// Add destructors
 			if(stage.is('.destructable')) {
-				var destructor = $('<a class="destructor">' + Symphony.Language.get('Remove Item') + '</a>');
+				var destructor = $('<a class="destructor">&#215;</a>');
 				items.append(destructor.clone());
 				
 				// It's possible that the empty message is a create template
@@ -72,6 +72,11 @@
 			// Add search field
 			if(stage.is('.searchable')) {
 				browser.prependTo(queue);
+			}
+
+			// Add constructor
+			if(stage.is('.constructable')) {
+				$('<a class="create">' + Symphony.Language.get('Create New') + '</a>').prependTo(queue);
 			}
 
 			// Add queue
@@ -149,14 +154,14 @@
 				choose(item);
 			});
 						
-			// Queuing
-			stage.delegate('.browser', 'click.stage', function() {
+			// Browsing
+			stage.delegate('.browser input', 'click.stage search.stage', function() {
 				stage.trigger('browsestart');
 				queue.find('ul').slideDown('fast');
 				
 				// Clear placeholder
-				if(browser.val() == placeholder) {
-					browser.val('').removeClass('placeholder');
+				if(searchfield.val() == placeholder) {
+					searchfield.val('').removeClass('placeholder');
 				}
 
 				// Close queue on body click
@@ -165,18 +170,33 @@
 				});
 			})
 			stage.bind('browsestop.stage', function() {
-				browser.val(placeholder).addClass('placeholder');
+				searchfield.val(placeholder).addClass('placeholder');
 				queue.find('ul').slideUp('fast');
 				queue.find('ul li').show();
+				counter.hide();
+			});
+			stage.delegate('.browser input', 'focus.stage blur.stage', function(event) {
+				if(event.type == 'click' || event.type == 'focus' || event.type == 'focusin') {
+					browser.addClass('searching');
+				}
+				else {
+					browser.removeClass('searching');
+				}
+			});
+			stage.delegate('.browser .counter', 'click.stage', function() {
+				counter.hide();
+				searchfield.val('').focus().keyup();
+				
+				return false;
 			});
 			
 			// Updating
 			stage.bind('update.stage', function() {
 				sync();
-			});
+			});			
 			
 			// Searching
-			stage.delegate('.browser', 'keyup.stage', function(event) {
+			stage.delegate('.browser input', 'keyup.stage', function(event) {
 				var strings = $.trim($(event.target).val()).toLowerCase().split(' ');
 
 				// Searching
@@ -189,6 +209,9 @@
 					queue.find('li').slideDown('fast');
 					stage.trigger('searchstop');
 					stage.trigger('browsestart');
+					
+					// Show item count
+					count();
 				}
 			});
 			stage.bind('searchstart.stage', function(event, strings) {
@@ -339,7 +362,8 @@
 				
 			// Search the queue
 			var search = function(strings) {
-				var queue_items = queue.find('li');
+				var queue_items = queue.find('li'),
+					size = 0;
 
 				// Build search index
 				if(!index) {
@@ -362,6 +386,7 @@
 				
 					// Show matching items
 					if(found) {
+						size++;
 						current.slideDown('fast');
 					}
 
@@ -370,15 +395,47 @@
 						current.slideUp('fast');
 					}
 				});
+				
+				// Show count
+				count(size);
 
 				// Found
-				if(queue_items.filter(':visible').size() > 0) {
+				if(size > 0) {
 					stage.trigger('searchfound');
 				}
 
 				// None found
 				else {
 					stage.trigger('searchnonfound');
+				}
+			};
+			
+			// Count items
+			var count = function(size) {
+			
+				// No size
+				if(!size && size !== 0) {
+					counter.hide();
+				}
+				
+				// Show counter
+				else {
+					counter.fadeIn('fast');
+				
+					// No items
+					if(size == 0) {
+						counter.html(Symphony.Language.get('no results') + '<span>&#215;</span>');
+					}
+					
+					// Single item
+					else if(size == 1) {
+						counter.html(Symphony.Language.get('1 result', { count: 1 }) + '<span>&#215;</span>');
+					}
+					
+					// Multiple items
+					else{
+						counter.html(Symphony.Language.get('{$count} results', { count: size }) + '<span>&#215;</span>');
+					}
 				}
 			};
 			
