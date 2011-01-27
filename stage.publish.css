@@ -158,11 +158,12 @@ div.stage div.browser.searching, div.stage div.browser:hover {
 }
 
 div.stage div.browser input {
-	border: none;
+	border: 0 solid transparent;
 	padding: 0;
 	margin: 0;
 	width: 100%;
 	font-size: 11px;
+	line-height: 1;
 }
 
 div.stage div.browser input:focus {
@@ -225,6 +226,7 @@ div.stage div.queue a.create {
 	-webkit-border-radius: 1em;
 	text-decoration: none;
 	float: right;
+	height: 10px;
 }
 
 div.stage li a.create {
