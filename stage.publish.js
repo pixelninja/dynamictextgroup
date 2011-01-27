@@ -219,6 +219,11 @@
 			});
 			
 			// Sorting
+			selection.bind('orderstart.stage', function() {
+				selection.find('.drawer').slideUp('fast', function() {
+					$(this).remove();
+				})
+			});
 			selection.bind('orderstop.stage', function() {
 
 				// Get new item order
