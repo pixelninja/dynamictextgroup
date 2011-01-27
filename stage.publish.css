@@ -139,6 +139,9 @@ div.stage div.queue input {
 	margin: 0 0 5px;
 	width: 100%;
 	border: 1px inset rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	box-shadow: inset 1px 1px 1px rgba(69, 69, 69, 0.2);
+	box-sizing: border-box;
 	-moz-border-radius: 10px;
 	-moz-box-shadow: inset 1px 1px 1px rgba(69, 69, 69, 0.2);
 	-moz-box-sizing: border-box;
