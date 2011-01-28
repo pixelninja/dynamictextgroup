@@ -466,7 +466,7 @@
 				})
 				
 				// Stop dragging
-				page.one('mouseup.stage', function(event) {
+				page.unbind('mouseup.stage').one('mouseup.stage', function(event) {
 					dropper.trigger('mouseout.stage', false);
 					dragger.fadeOut('fast');
 					$('textarea').trigger('drop.stage', [item]);
