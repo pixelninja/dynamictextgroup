@@ -137,9 +137,6 @@
 
 			// Destructing
 			stage.delegate('a.destructor', 'click.stage', function(event) {
-				event.preventDefault();
-
-				// Find and destruct item
 				var item = $(this).parents('li');
 				item.trigger('destruct');
 			});
