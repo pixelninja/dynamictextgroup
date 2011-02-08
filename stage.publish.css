@@ -244,7 +244,7 @@ div.stage.searchable div.queue ul {
 	margin: 0 0 5px;
 	max-height: 270px;
 	overflow: auto;
-	background: #fff url(images/loading-light.gif) center no-repeat;
+	background: #fff url(images/loading.gif) center no-repeat;
 }
 
 div.stage div.queue li {
