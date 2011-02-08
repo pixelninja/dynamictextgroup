@@ -59,18 +59,17 @@ div.stage li a.destructor {
 	top: 7px;
 	right: 14px;
 	text-decoration: none;
-	color: #353533;
-	height: 14px;
-	width: 14px;
-	line-height: 1.5;
-	background: #d3d3d3 url(images/delete.png) center no-repeat;
+	color: #fff;
+	height: 11px;
+	width: 11px;
+	line-height: 0.5;
+	background: #d3d3d3;
 	border-radius: 8px;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
-	text-align: center;
-	overflow: hidden;
-	text-indent: -1000em;
+	padding: 3px 0 0 3px;
 	border: 1px solid #cdcdcd;
+	font-size: 0.95em;
 }
 
 div.stage li a.destructor:hover {
