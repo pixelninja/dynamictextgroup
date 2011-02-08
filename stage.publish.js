@@ -13,7 +13,6 @@
 		Symphony.Language.add({
 			'Browse': false,
 			'Create New': false,
-			'Remove Item': false,
 			'No items found.': false,
 			'no results': false,
 			'1 result': false,
