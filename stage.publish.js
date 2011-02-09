@@ -458,37 +458,33 @@
 
 				// Dragging
 				page.bind('mousemove.stage', function(event) {
+					var target = $(event.target);
+					
+					// Drag item
 					drag(context, item, event);
-				})
+					
+					// Highlight drop target
+					if(target.is('textarea')) {
+						drop(target);
+					}
+					else if(!target.is('.dropper') && !target.is('.dragger') && target.parent('.dragger').size() == 0) {
+						$('textarea').removeClass('droptarget');
+						dropper.fadeOut('fast');
+					}
+					
+				});
 				
 				// Stop dragging
 				page.unbind('mouseup.stage').one('mouseup.stage', function(event) {
-					dropper.trigger('mouseout.stage', false);
+				
+					// Remove helpers
+					dropper.fadeOut('fast');
 					dragger.fadeOut('fast');
+					page.unbind('mousemove.stage');
+					
+					// Drop content
 					$('textarea').trigger('drop.stage', [item]);
-					page.unbind('.stage');
 					selection.removeClass('dragging');
-				});
-
-				// Dropping
-				page.delegate('textarea', 'mouseover.stage', function() {
-					var textarea = $(this);
-					
-					// Drop item
-					drop(textarea);
-				});
-				page.delegate('div.dropper', 'mouseout.stage', function(event, moved) {
-					var target = $(event.relatedTarget);
-					
-					// Don't remove droptarget on mouseup
-					if(moved !== false) {
-						$('textarea').removeClass('droptarget');
-					}
-					
-					// Hide drop helper
-					if(!target.is('.dragger') && target.parents('div.dragger').size() == 0) {
-						dropper.fadeOut('fast');
-					}
 				});
 			};
 			
