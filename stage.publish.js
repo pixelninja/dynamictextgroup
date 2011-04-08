@@ -97,6 +97,9 @@
 			if(page.find('div.dragger').size() == 0) {
 				$('body').append(dragger.hide());
 			}
+			else {
+				dragger = page.find('div.dragger');
+			}
 			
 			// Add drop helper
 			if(page.find('div.dropper').size() == 0) {
@@ -230,7 +233,6 @@
 			
 			// Dragging & dropping
 			if(stage.is('.droppable')) {
-
 				selection.bind('orderstart', function(event, item) {
 					$('textarea').removeClass('droptarget');
 					move(item, event);
