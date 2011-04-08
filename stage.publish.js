@@ -147,7 +147,9 @@
 			// Selecting
 			queue.delegate('li', 'click.stage', function() {
 				var item = $(this);
-				choose(item);
+				if(!item.is('.message')) {
+					choose(item);
+				}
 			});
 						
 			// Browsing
@@ -202,7 +204,7 @@
 								
 				// Not searching 
 				else {
-					queue.find('li').slideDown('fast');
+					queue.find('li').removeClass('found').show();
 					stage.trigger('searchstop');
 					stage.trigger('browsestart');
 					
@@ -360,22 +362,17 @@
 			var search = function(strings) {
 				var queue_items = queue.find('li'),
 					size = 0;
-
-				// Build search index
-				if(!index) {
-					index = queue.find('li:not(.message)').map(function() {
-						return $(this).text().toLowerCase();
-					});
-				}
-				
+			
 				// Search
-				index.each(function(position, content) {
+				queue_items.hide().removeClass('found odd').each(function(position) {
 					var found = true,
-						current = queue_items.filter(':nth(' + position + ')');
+						current = $(this),
+						text = current.text();
 
 					// Items have to match all search strings
 					$.each(strings, function(count, string) {
-						if(content.search(string) == -1) {
+						var expression = new RegExp(string, 'i');
+						if(text.search(expression) == -1) {
 							found = false;
 						}
 					});
@@ -383,12 +380,12 @@
 					// Show matching items
 					if(found) {
 						size++;
-						current.slideDown('fast');
-					}
-
-					// Hide other items
-					else {
-						current.slideUp('fast');
+						current.addClass('found').show();
+						
+						// Restore zebra
+						if(size % 2 == 0) {
+							current.addClass('odd');
+						}
 					}
 				});
 				
