@@ -267,7 +267,7 @@ div.stage div.queue li.found.odd {
 	background: #f5f5f4;
 }
 
-div.stage div.queue li.selected {
+div.stage div.queue li.selected, div.stage div.queue li.found.odd.selected {
 	color: #fff;
 	background: #5677c3;
 	border-bottom: 1px solid #617dc5;
@@ -277,7 +277,7 @@ div.stage div.queue li.selected a.file {
 	color: #fff;
 }
 
-div.stage div.queue li:nth-child(even).selected {
+div.stage div.queue li:nth-child(even).selected, div.stage div.queue li.found.selected {
 	background: #5273c0;
 }
 
