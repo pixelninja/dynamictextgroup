@@ -105,6 +105,9 @@
 			if(page.find('div.dropper').size() == 0) {
 				$('body').append(dropper.hide());
 			}
+			else {
+				dropper = page.find('div.dropper');
+			}
 		
 			// Store templates:
 			// This is needed for other script that interact with Stage
