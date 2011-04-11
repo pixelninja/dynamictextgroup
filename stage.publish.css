@@ -6,8 +6,10 @@
  */
 
 div.stage {
+	position: relative;
 	margin: -1.5em 0 1.5em;
 	padding-top: 2px;
+	z-index: 1000;
 }
 
 div.stage ul {
