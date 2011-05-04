@@ -69,7 +69,7 @@ div.stage li a.destructor {
 	border-radius: 8px;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
-	padding: 3px 0 0 3px;
+	padding: 3px 0 0 3px !important;
 	border: 1px solid #cdcdcd;
 	font-size: 0.95em;
 }
