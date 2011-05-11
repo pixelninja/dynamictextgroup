@@ -447,6 +447,13 @@
 
 			// Drag and drop items
 			var move = function(item, event) {
+				
+				// Don't move messages
+				if(item.is('.message')) {
+					return true;
+				}
+			
+				// Start dragging
 				selection.addClass('dragging');
 				dragger.empty().append(item.html()).attr('data-value', item.attr('data-value')).find('.destructor').remove();
 				
