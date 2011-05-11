@@ -5,6 +5,10 @@
  * @source: http://github.com/nilshoerrmann/stage
  */
 
+#nav {
+	z-index: 5000;
+}
+
 div.stage {
 	position: relative;
 	margin: -1.5em 0 1.5em;
