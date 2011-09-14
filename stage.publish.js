@@ -289,9 +289,10 @@
 				
 				// Show item
 				item.appendTo(selection);
-				stage.trigger('constructstop', [item]);
+				stage.trigger('constructattach', [item]);
 				item.slideDown('fast', function() {
 					selection.removeClass('constructing');
+					stage.trigger('constructstop', [item]);
 				});
 			};
 
@@ -309,8 +310,8 @@
 					// It's possible that the empty message is a create template
 					if(empty.is('.template.create')) {
 						var empty_item = empty.clone().appendTo(selection);
-						stage.trigger('constructstop', [item]);
-						empty_item.slideDown('fast').removeClass('template create empty');
+						stage.trigger('constructattach', [item]);
+						empty_item.slideDown('fast', function() { stage.trigger('constructstop', [item]); }).removeClass('template create empty');
 						items = items.add(empty_item);
 					}
 					else {
