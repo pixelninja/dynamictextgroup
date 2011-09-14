@@ -289,7 +289,7 @@
 				
 				// Show item
 				item.appendTo(selection);
-				stage.trigger('constructattach', [item]);
+				stage.trigger('constructanim', [item]);
 				item.slideDown('fast', function() {
 					selection.removeClass('constructing');
 					stage.trigger('constructstop', [item]);
@@ -309,9 +309,12 @@
 					
 					// It's possible that the empty message is a create template
 					if(empty.is('.template.create')) {
+						stage.trigger('constructstart', [empty]);
 						var empty_item = empty.clone().appendTo(selection);
-						stage.trigger('constructattach', [item]);
-						empty_item.slideDown('fast', function() { stage.trigger('constructstop', [item]); }).removeClass('template create empty');
+						stage.trigger('constructanim', [empty_item]);
+						empty_item.slideDown('fast', function() {
+							stage.trigger('constructstop', [empty_item]);
+						}).removeClass('template create empty');
 						items = items.add(empty_item);
 					}
 					else {
@@ -323,6 +326,7 @@
 				queue.find('li[data-value="' + item.attr('data-value') + '"]').trigger('choose');
 
 				// Remove item
+				stage.trigger('destructanim', [item]);
 				item.addClass('destructing').slideUp('fast', function() {
 					item.remove();
 					items = items.not(item);
