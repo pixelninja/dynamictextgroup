@@ -310,7 +310,7 @@
 					// It's possible that the empty message is a create template
 					if(empty.is('.template.create')) {
 						stage.trigger('constructstart', [empty]);
-						var empty_item = empty.clone().appendTo(selection);
+						var empty_item = empty.clone().addClass('new').hide().appendTo(selection);
 						stage.trigger('constructanim', [empty_item]);
 						empty_item.slideDown('fast', function() {
 							stage.trigger('constructstop', [empty_item]);
