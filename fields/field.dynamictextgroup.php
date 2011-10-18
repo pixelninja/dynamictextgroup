@@ -225,6 +225,7 @@
 			
 			$schema = json_decode($this->get('schema'));
 			$fieldCount = $this->get('fieldcount');
+			$default_fields = $this->get('default_fields');
 			
 			
 			// Populate existing entries
@@ -245,7 +246,16 @@
 			}
 			// Blank entry
 			else {
-				$content[] = Textgroup::createNewTextGroup($this->get('element_name'), $fieldCount, NULL, NULL, $schema);
+				// DEFAULT FIELDS ITERATION TO GO HERE
+				if(!is_null($default_fields)) {
+					$defaults = preg_split('/,\s*/', $default_fields, -1, PREG_SPLIT_NO_EMPTY);
+	
+					foreach ($defaults as $row) {
+						$content[] = Textgroup::createNewTextGroup($this->get('element_name'), $fieldCount, $row, NULL, $schema, true);
+					}
+				} else {
+					$content[] = Textgroup::createNewTextGroup($this->get('element_name'), $fieldCount, NULL, NULL, $schema);
+				}
 			}
 			
 			// Add template

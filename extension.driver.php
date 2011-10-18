@@ -51,6 +51,7 @@
 					`field_id` int(11) unsigned NOT NULL,
 					`fieldcount` tinyint(1),
 					`schema` text,
+					`default_fields` text,
         	  		PRIMARY KEY  (`id`),
 			  		KEY `field_id` (`field_id`)
 				)"

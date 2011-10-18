@@ -2,7 +2,7 @@
 
 	class Textgroup {
 		
-		public static function createNewTextGroup($element, $fieldCount=2, $values=NULL, $class=NULL, $schema=NULL) {
+		public static function createNewTextGroup($element, $fieldCount=2, $values=NULL, $class=NULL, $schema=NULL, $default=NULL) {
 			// Additional classes
 			$classes = array();
 			if($class) {
@@ -11,24 +11,44 @@
 			
 			// Field creator
 			$fields = '';
-			for ($i=0; $i<$fieldCount; $i++) {
-				$fieldVal = ($values != NULL && $values[$i] != ' ') ? $values[$i] : NULL;
-				switch ($schema[$i]->options->type) {
-					case 'text':
-						$fields .= self::__createTextField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
-						break;
-					case 'select':
-						$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-						break;
-					case 'checkbox':
-						$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-						break;
-					case 'radio':
-						$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-						break;
+			
+			if($default == true) {
+				for ($i=0; $i<$fieldCount; $i++) {
+					switch ($schema[0]->options->type) {
+						case 'text':
+							$fields .= self::__createTextField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
+							break;
+						case 'select':
+							$fields .= self::__createSelectField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+							break;
+						case 'checkbox':
+							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+							break;
+						case 'radio':
+							$fields .= self::__createRadioField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+							break;
+					}
+				}
+			} else {	
+				for ($i=0; $i<$fieldCount; $i++) {
+					$fieldVal = ($values != NULL && $values[$i] != ' ') ? $values[$i] : NULL;
+					switch ($schema[$i]->options->type) {
+						case 'text':
+							$fields .= self::__createTextField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
+							break;
+						case 'select':
+							$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+							break;
+						case 'checkbox':
+							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+							break;
+						case 'radio':
+							$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+							break;
+					}
 				}
 			}
-			
+						
 			// Create element
 			return new XMLElement(
 				'li', 
