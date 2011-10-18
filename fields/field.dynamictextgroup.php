@@ -76,6 +76,23 @@
 				$wrapper->appendChild($fieldset);
 			}
 
+
+			//	Default Fields			
+			$fieldset = new XMLElement('fieldset');
+			$group = new XMLElement('div');
+			
+			$group = Widget::Label(__('Default Fields'));
+			$group->appendChild(
+				new XMLElement('i', __('Optional'))
+			);
+			$group->appendChild(Widget::Input(
+				"fields[".$this->get('sortorder')."][default_fields]", $this->get('default_fields')
+			));
+			
+			$fieldset->appendChild($group);
+			$wrapper->appendChild($fieldset);
+			
+
 			// Behaviour
 			$fieldset = Stage::displaySettings(
 				$this->get('id'), 
@@ -126,6 +143,11 @@
 				
 				$fields['fieldcount'] = $ct;
 				$fields['schema'] = json_encode($schema);
+			}
+			
+			// Parse schema
+			if ($this->get('default_fields') != '') {
+				$fields['default_fields'] = $this->get('default_fields');
 			}
 			
 			// Parse rename data
