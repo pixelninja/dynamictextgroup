@@ -56,20 +56,38 @@
 			} else {	
 				for ($i=0; $i<$fieldCount; $i++) {
 					$fieldVal = ($values != NULL && $values[$i] != ' ') ? $values[$i] : NULL;
-					switch ($schema[$i]->options->type) {
-						case 'text':
+					
+					if ($schema[$i]->options->type == 'text') {
+						if ($schema[$i]->handle == 'title') {
+							$fields .= self::__createTextField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required, $readonly = true);
+						} else {
 							$fields .= self::__createTextField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
-							break;
-						case 'select':
-							$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-							break;
-						case 'checkbox':
-							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-							break;
-						case 'radio':
-							$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-							break;
+						}
 					}
+					if ($schema[$i]->options->type == 'select') {
+						$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+					}
+					if ($schema[$i]->options->type == 'checkbox') {
+							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+					}
+					if ($schema[$i]->options->type == 'radio') {
+							$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+					}
+
+//					switch ($schema[$i]->options->type) {
+//						case 'text':
+//							$fields .= self::__createTextField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
+//							break;
+//						case 'select':
+//							$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+//							break;
+//						case 'checkbox':
+//							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+//							break;
+//						case 'radio':
+//							$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+//							break;
+//					}
 				}
 			}
 						
