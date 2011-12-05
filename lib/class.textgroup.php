@@ -12,21 +12,45 @@
 			// Field creator
 			$fields = '';
 			
+//			if($default == true) {
+//				for ($i=0; $i<$fieldCount; $i++) {
+//					
+//					var_dump($schema[$i]->handle);
+//					exit;
+//
+//					switch ($schema[$i]->options->type) {
+//						case 'text':
+//							$fields .= self::__createTextField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
+//							break;
+//						case 'select':
+//							$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+//							break;
+//						case 'checkbox':
+//							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+//							break;
+//						case 'radio':
+//							$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+//							break;
+//					}
+//				}
+//			} else {	
 			if($default == true) {
 				for ($i=0; $i<$fieldCount; $i++) {
-					switch ($schema[0]->options->type) {
-						case 'text':
-							$fields .= self::__createTextField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
-							break;
-						case 'select':
-							$fields .= self::__createSelectField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-							break;
-						case 'checkbox':
-							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-							break;
-						case 'radio':
-							$fields .= self::__createRadioField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
-							break;
+					if ($schema[$i]->options->type == 'text') {
+						if ($schema[$i]->handle == 'title') {
+							$fields .= self::__createTextField($element, $schema[$i]->handle, $values, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required, $readonly = true);
+						} else {
+							$fields .= self::__createTextField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options->required);
+						}
+					}
+					if ($schema[$i]->options->type == 'select') {
+							$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+					}
+					if ($schema[$i]->options->type == 'checkbox') {
+							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+					}
+					if ($schema[$i]->options->type == 'radio') {
+							$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
 					}
 				}
 			} else {	
@@ -59,13 +83,17 @@
 			);
 		}
 		
-		private static function __createTextField($element, $handle, $textvalue, $label=NULL, $width=NULL, $required=NULL) {
+		private static function __createTextField($element, $handle, $textvalue, $label=NULL, $width=NULL, $required=NULL, $readonly=NULL) {
 			// Generate text field
 			$width = 'style="width:'. $width .'% !important;"';
 			$reqLabelAppendage = $required ? ' <span class="req">*</span>' : '';
 			$reqclas .= $required ? ' req' : '';
 			$lbl = '<label style="display:none;" for="fields[' . $element . '][' . $handle . '][]">' . $label . $reqLabelAppendage . '</label>';
-			return '<span class="fieldHolder '. $handle .'-holder'.$reqclas.'" '. $width .'>'. $lbl .'<input type="text" id="field-'. $handle .'" name="fields['. $element .']['. $handle .'][]" value="'. $textvalue .'" placeholder="'. $label .'" class="field-'. $handle .'" /></span>';
+			if ($readonly == true) {
+				return '<span class="fieldHolder '. $handle .'-holder'.$reqclas.'" '. $width .'>'. $lbl .'<input type="text" id="field-'. $handle .'" name="fields['. $element .']['. $handle .'][]" value="'. $textvalue .'" placeholder="'. $label .'" class="field-'. $handle .'" readonly="true" /></span>';
+			} else {
+				return '<span class="fieldHolder '. $handle .'-holder'.$reqclas.'" '. $width .'>'. $lbl .'<input type="text" id="field-'. $handle .'" name="fields['. $element .']['. $handle .'][]" value="'. $textvalue .'" placeholder="'. $label .'" class="field-'. $handle .'" /></span>';
+			}
 		}
 		
 		private static function __createSelectField($element, $handle, $val, $label=NULL, $width=NULL, $options=NULL) {
