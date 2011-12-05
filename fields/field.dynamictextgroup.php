@@ -402,6 +402,8 @@
 					if (!empty($field[$i])) {
 						$empty = false;	
 						$emptyEntry = false;	
+					} elseif ($field[$i] == '0') {
+						$fields[$i] = '0';
 					} else {
 						$field[$i] = ' ';
 					}
@@ -412,7 +414,7 @@
 					}
 				}
 			}
-
+			
 			if ($empty) {
 				return null;
 			} else {
