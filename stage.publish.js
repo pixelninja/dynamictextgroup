@@ -1,14 +1,17 @@
 (function($) {
 
 	/**
-	 * Stage is a JavaScript utility for Symphony 
-	 * which adds a multiselect interface to the backend.
+	 * Stage is a jQuery plugin for Symphony 
+	 * that adds a multiselect interface to the backend.
 	 *
 	 * @author: Nils Hörrmann, post@nilshoerrmann.de
 	 * @source: http://github.com/nilshoerrmann/stage
 	 */
-	$(document).ready(function() {
+	$.fn.symphonyStage = function() {
+		var objects = $(this);
 
+	/*---------------------------------------------------------------------------*/
+		
 		// Language strings
 		Symphony.Language.add({
 			'Browse': false,
@@ -19,8 +22,10 @@
 			'{$count} results': false
 		});
 
+	/*---------------------------------------------------------------------------*/
+		
 		// Initialize Stage
-		$('div.stage').each(function() {
+		return objects.each(function() {
 			var page = $(document),
 				stage = $(this),
 				field = stage.parent(),
@@ -550,6 +555,11 @@
 					
 		});
 
+	};
+	
+	// Initialise Stage
+	$(document).ready(function() {
+		$('div.stage').symphonyStage();
 	});
 	
 })(jQuery.noConflict());
