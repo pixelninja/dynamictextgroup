@@ -19,7 +19,7 @@
 			$status = array();
 			
 			// Create database stage table
-			$status[] = Administration::instance()->Database->query(
+			$status[] = Symphony::Database()->query(
 				"CREATE TABLE IF NOT EXISTS `tbl_fields_stage` (
 					`id` int(11) unsigned NOT NULL auto_increment,
 					`field_id` int(11) unsigned NOT NULL default '0',
@@ -34,7 +34,7 @@
 			);
 			
 			// Create database sorting table
-			$status[] = Administration::instance()->Database->query(
+			$status[] = Symphony::Database()->query(
 				"CREATE TABLE IF NOT EXISTS `tbl_fields_stage_sorting` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`entry_id` int(11) NOT NULL,
@@ -42,7 +42,7 @@
 					`order` text,
 					`context` varchar(255) default NULL,
 					PRIMARY KEY (`id`)
-				)"
+				) TYPE=MyISAM;"
 			);
 
 			// Report status
@@ -76,7 +76,7 @@
 			$fieldset->appendChild($group);
 			
 			// Get stage settings
-			$stage = Administration::instance()->Database->fetchRow(0, 
+			$stage = Symphony::Database()->fetchRow(0, 
 				"SELECT * FROM tbl_fields_stage WHERE field_id = '" . $field_id . "' LIMIT 1"
 			);
 			
@@ -141,18 +141,18 @@
 		 *  Context of the Stage instance		 
 		 */
 		public static function saveSettings($field_id, $data, $context) {
-			Administration::instance()->Database->query(
+			Symphony::Database()->query(
 				"DELETE FROM `tbl_fields_stage` WHERE `field_id` = '$field_id' LIMIT 1"
 			);
 			
 			// Save new stage settings for this field
 			if(is_array($data)) {
-				Administration::instance()->Database->query(
+				Symphony::Database()->query(
 					"INSERT INTO `tbl_fields_stage` (`field_id`, " . implode(', ', array_keys($data)) . ", `context`) VALUES ($field_id, " . implode(', ', $data) . ", '$context')"
 				);
 			}
 			else {
-				Administration::instance()->Database->query(
+				Symphony::Database()->query(
 					"INSERT INTO `tbl_fields_stage` (`field_id`, `context`) VALUES ($field_id, '$context')"
 				);
 			}
@@ -196,7 +196,7 @@
 		public static function getComponents($field_id) {
 		
 			// Fetch settings
-			$settings = Administration::instance()->Database->fetchRow(0,
+			$settings = Symphony::Database()->fetchRow(0,
 				"SELECT `constructable`, `destructable`, `draggable`, `droppable`, `searchable` FROM `tbl_fields_stage` WHERE `field_id` = '" . $field_id . "' LIMIT 1"
 			);
 			
