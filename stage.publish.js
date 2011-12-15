@@ -532,6 +532,11 @@
 				// Show drag helper
 				if(x < area.left || x > area.right || y < area.top || y > area.bottom) {
 					dragger.fadeIn('fast');
+					
+					// Stop ordering
+					$(document).unbind('.orderable');
+					item.removeClass('ordering');
+					selection.removeClass('ordering').trigger('ordercancel', [item]);
 				}
 
 				// Hide drag helper
