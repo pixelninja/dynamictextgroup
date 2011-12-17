@@ -4,11 +4,11 @@
 	 * @package stage
 	 */
 	/**
-	 * The Stage class offers function to display and save 
-	 * Stage settings in the section editor. 
+	 * The Stage class offers function to display and save
+	 * Stage settings in the section editor.
 	 */
 	class Stage {
-	
+
 		/**
 		 * Install Stage by creating tables for settings and sortings if needed.
 		 *
@@ -17,7 +17,7 @@
 		 */
 		public static function install() {
 			$status = array();
-			
+
 			// Create database stage table
 			$status[] = Symphony::Database()->query(
 				"CREATE TABLE IF NOT EXISTS `tbl_fields_stage` (
@@ -32,7 +32,7 @@
 					PRIMARY KEY  (`id`)
 				) TYPE=MyISAM;"
 			);
-			
+
 			// Create database sorting table
 			$status[] = Symphony::Database()->query(
 				"CREATE TABLE IF NOT EXISTS `tbl_fields_stage_sorting` (
@@ -69,17 +69,17 @@
 		 *  Returns the settings fieldset
 		 */
 		public static function displaySettings($field_id, $position, $title, $order=NULL) {
-		
+
 			// Create settings fieldset
 			$fieldset = new XMLElement('fieldset', '<legend>' . $title . '</legend>');
 			$group = new XMLElement('div', NULL, array('class' => 'compact'));
 			$fieldset->appendChild($group);
-			
+
 			// Get stage settings
-			$stage = Symphony::Database()->fetchRow(0, 
+			$stage = Symphony::Database()->fetchRow(0,
 				"SELECT * FROM tbl_fields_stage WHERE field_id = '" . $field_id . "' LIMIT 1"
 			);
-			
+
 			// Handle missing stage settings
 			if(empty($stage)) {
 				$stage = array(
@@ -90,15 +90,15 @@
 					'draggable' => 1
 				);
 			}
-			
+
 			// Setting order
 			if(empty($order)) {
 				$order = array('constructable', 'destructable', 'searchable', 'droppable', 'draggable');
 			}
-			
+
 			// Create settings
 			foreach($order as $setting) {
-			
+
 				// Get copy
 				if($setting == 'constructable') {
 					$option = __('Allow creation of new items');
@@ -120,16 +120,16 @@
 					$option = __('Allow sorting of items');
 					$description = __('This will enable item dragging and reordering');
 				}
-			
+
 				// Layout
 				$label = new XMLElement('label', '<input name="fields[' . $position . '][stage][' . $setting . ']" value="1" type="checkbox"' . ($stage[$setting] == 0 ? '' : ' checked="checked"') . '/> ' . $option . ' <i>' . $description . '</i>');
 				$group->appendChild($label);
 			}
-			
+
 			// Return stage settings
 			return $fieldset;
 		}
-		
+
 		/**
 		 * Save setting in the section editor.
 		 *
@@ -138,13 +138,13 @@
 		 * @param array $data
 		 *  Data to be stored
 		 * @param string $context
-		 *  Context of the Stage instance		 
+		 *  Context of the Stage instance
 		 */
 		public static function saveSettings($field_id, $data, $context) {
 			Symphony::Database()->query(
 				"DELETE FROM `tbl_fields_stage` WHERE `field_id` = '$field_id' LIMIT 1"
 			);
-			
+
 			// Save new stage settings for this field
 			if(is_array($data)) {
 				Symphony::Database()->query(
@@ -157,7 +157,7 @@
 				);
 			}
 		}
-		
+
 		/**
 		 * Create stage interface.
 		 *
@@ -171,20 +171,20 @@
 		 *  An array of XMLElements that should be appended to the stage selection
 		 * @return XMLElement
 		 *  Return stage interface
-		 */		
+		 */
 		public static function create($handle, $id, $custom_settings, $content=array()) {
-			
+
 			// Get stage settings
 			$settings = 'stage ' . implode(' ', Stage::getComponents($id)) . ' ' . $custom_settings;
-			
+
 			// Create stage
 			$stage = new XMLElement('div', NULL, array('class' => $settings));
 			$selection = new XMLElement('ul', NULL, array('class' => 'selection'));
 			$selection->appendChildArray($content);
 			$stage->appendChild($selection);
-			return $stage;	
+			return $stage;
 		}
-		
+
 		/**
 		 * Get components
 		 *
@@ -194,20 +194,19 @@
 		 *  Array of active components
 		 */
 		public static function getComponents($field_id) {
-		
+
 			// Fetch settings
 			$settings = Symphony::Database()->fetchRow(0,
 				"SELECT `constructable`, `destructable`, `draggable`, `droppable`, `searchable` FROM `tbl_fields_stage` WHERE `field_id` = '" . $field_id . "' LIMIT 1"
 			);
-			
+
 			// Remove disabled components
 			foreach($settings as $key => $value) {
 				if($value == 0) unset($settings[$key]);
 			}
-			
+
 			// Return active components
 			return array_keys($settings);
 		}
-		
+
 	}
-	
