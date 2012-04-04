@@ -44,13 +44,46 @@
 						}
 					}
 					if ($schema[$i]->options->type == 'select') {
-							$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+						
+						if ($element == "financial-summary") {
+							$weeks = 'Weeks';
+							$hours = 'Hours';
+							$dollars = 'Dollars';
+							
+							$management = 'Management';
+							$design = 'Design';
+							$development = 'Development';
+							$materials = 'Materials';
+							
+							if ($i == '2') {
+								if ($values == "Target Duration") $fieldVal = $weeks;
+								elseif ($values == "Actual Duration") $fieldVal = $weeks;
+								elseif ($values == "Material Budget") $fieldVal = $dollars;
+								elseif ($values == "Material Costs") $fieldVal = $dollars;
+								else $fieldVal = $hours;
+							}
+							
+							if ($i == '3') {
+								if ($values == "Target Duration") $fieldVal = '';
+								elseif ($values == "Actual Duration") $fieldVal = '';
+								elseif ($values == "PM Hrs Budgeted") $fieldVal = $management;
+								elseif ($values == "PM Hrs Actual") $fieldVal = $management;
+								elseif ($values == "ACD Hrs Budgeted") $fieldVal = $management;
+								elseif ($values == "ACD Hrs Actual") $fieldVal = $management;
+								elseif ($values == "Dev Time Budgeted") $fieldVal = $development;
+								elseif ($values == "Dev Time Actual") $fieldVal = $development;
+								elseif ($values == "Material Budget") $fieldVal = $materials;
+								elseif ($values == "Material Costs") $fieldVal = $materials;
+								else $fieldVal = $design;
+							}
+						}
+						$fields .= self::__createSelectField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
 					}
 					if ($schema[$i]->options->type == 'checkbox') {
-							$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+						$fields .= self::__createCheckboxField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
 					}
 					if ($schema[$i]->options->type == 'radio') {
-							$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
+						$fields .= self::__createRadioField($element, $schema[$i]->handle, $fieldVal, $schema[$i]->label, $schema[$i]->width, $schema[$i]->options);
 					}
 				}
 			} else {	
