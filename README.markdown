@@ -1,6 +1,6 @@
 # Dynamic Text Group
 
--  Version: 2.0dev6
+-  Version: 2.0dev7
 -  Author: [Brock Petrie](http://www.brockpetrie.com)
 -  Build Date: 2011-09-21
 -  Requirements: Symphony 2.2

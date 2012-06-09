@@ -17,7 +17,7 @@
 		<dependency>stage</dependency>
 	</dependencies>
 	<releases>
-		<release version="1.0" date="2011-06-05" min="2.2.0">Initial release</release>
+		<release version="2.0dev7" date="2011-06-05" min="2.2.0">Made compatible with Symphony 2.3</release>
 	</releases>
 	<media>
 		<item type="video" url="http://www.screenr.com/embed/KgAs">Overview I: Introduction</item>

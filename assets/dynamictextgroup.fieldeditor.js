@@ -204,7 +204,7 @@
 				
 				
 				// Field Delete button
-				var deleteButton = $('<a class="dtgButton del" href="#">Delete Field</a>').bind('click',function() { dtgEditor.fieldMaster(boxy); return false; });
+				var deleteButton = $('<a class="dtgButton button del" href="#">Delete Field</a>').bind('click',function() { dtgEditor.fieldMaster(boxy); return false; });
 				$('<li></li>').append(deleteButton).appendTo($(options));
 				
 				$(optionsHolder).appendTo($('.inner', boxy));

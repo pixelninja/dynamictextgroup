@@ -13,8 +13,8 @@
 	Class fielddynamictextgroup extends Field {
 
 		/* * * @see http://symphony-cms.com/learn/api/2.2/toolkit/field/#__construct * * */
-		function __construct(&$parent) {	
-			parent::__construct($parent);
+		function __construct() {	
+			parent::__construct();
 			$this->_name = __('Dynamic Text Group');
 			$this->_required = true;
 			$this->set('required', 'no');
@@ -69,7 +69,7 @@
 				$tblocks .= '<input type="hidden" id="delfields" name="fields['.$this->get('sortorder').'][delfields]" value="" />';
 				$tblocks .= '<input type="hidden" id="renfields" name="fields['.$this->get('sortorder').'][renfields]" value="" />';
 		
-				$fieldset = new XMLElement('fieldset', '<legend>Field Editor</legend><div id="stageHolder"><div id="stage"></div><div id="messages"></div><a class="dtgButton" id="add">Add Field</a><br clear="all" /></div>'.$tblocks);
+				$fieldset = new XMLElement('fieldset', '<legend>Field Editor</legend><div id="stageHolder"><div id="stage"></div><div id="messages"></div><a class="button dtgButton" id="add">Add Field</a><br clear="all" /></div>'.$tblocks);
 				$wrapper->appendChild($fieldset);
 			} else {
 				$fieldset = new XMLElement('fieldset', '<legend>Field Editor</legend>Please save the section to enable the Field Editor.<br /><br />');
